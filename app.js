@@ -69,7 +69,7 @@ window.onload = () => {
 // Function that needs to wait for fetchData to finish
 async function getImageId(imageElement) {
   if (!fetchedData) {
-    console.log("Data not fetched yet, waiting...");
+    // console.log("Data not fetched yet, waiting...");
     await waitForData(); // Wait for data if not yet fetched
   }
 
@@ -88,7 +88,6 @@ async function getImageId(imageElement) {
       commitment.toString() +
       ".png";
 
-    console.log(target);
     names = [];
     for (var i = 0; i < fetchedData[cat].length; i++) {
       if (fetchedData[cat][i].notes.includes(target)) {
@@ -97,7 +96,6 @@ async function getImageId(imageElement) {
         );
       }
     }
-    console.log(names);
 
     if (names.length > 0) {
       // Map categories to their respective ticker container IDs
@@ -122,11 +120,7 @@ async function getImageId(imageElement) {
             newsTicker.textContent = namesString;
           }
         }
-      } else {
-        console.log(`No container found for category: ${cat}`);
       }
-    } else {
-      console.log("No matching names found");
     }
   }
 }
