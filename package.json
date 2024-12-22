@@ -1,0 +1,11 @@
+{
+  "name": "find_yourself",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "browser-sync start --server --files 'index.html, style.css, app.js'"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
