@@ -49,31 +49,35 @@ async function fetchData() {
       "Travel",
     ];
 
-    // Grouping users by category
-    const new_data = categories.reduce((acc, category) => {
+    // Group users by category
+    fetchedData = categories.reduce((acc, category) => {
       acc[category] = data.filter((user) => user.category === category);
       return acc;
     }, {});
-
-    fetchedData = new_data;
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 
 // Call fetchData as soon as the page loads
-window.onload = () => {
-  fetchData(); // Fetch data on page load
-};
+window.onload = fetchData;
 
-// Function that needs to wait for fetchData to finish
+// Add hover event listeners dynamically
+function attachHoverListeners() {
+  document.querySelectorAll(".image-container").forEach((imageElement) => {
+    imageElement.addEventListener("mouseover", () => {
+      getImageId(imageElement); // Update text dynamically on hover
+    });
+  });
+}
+
+// Function to dynamically update hover text
 async function getImageId(imageElement) {
   if (!fetchedData) {
-    // console.log("Data not fetched yet, waiting...");
     await waitForData(); // Wait for data if not yet fetched
   }
 
-  const regex = /([a-zA-Z...]+)(\d{1,2})$/;
+  const regex = /([a-zA-Z]+)(\d{1,2})$/;
   const match = imageElement.id.match(regex);
 
   if (match) {
@@ -81,49 +85,45 @@ async function getImageId(imageElement) {
     const commitment = match[2];
     cat = cat.charAt(0).toUpperCase() + cat.slice(1);
 
-    let target =
-      cat.charAt(0).toLowerCase() +
-      cat.slice(1) +
-      "_" +
-      commitment.toString() +
-      ".png";
+    const target = `${cat.charAt(0).toLowerCase() + cat.slice(1)}_${commitment}.png`;
 
-    names = [];
-    for (var i = 0; i < fetchedData[cat].length; i++) {
-      if (fetchedData[cat][i].notes.includes(target)) {
-        names.push(
-          fetchedData[cat][i].firstName + " " + fetchedData[cat][i].lastName,
-        );
-      }
-    }
+    const names =
+      fetchedData[cat]
+        ?.filter((entry) => entry.notes.includes(target))
+        .map((entry) => `${entry.firstName} ${entry.lastName}`) || [];
 
+    console.log(names);
+
+    updateNewsTicker(cat, names);
+  }
+}
+
+function updateNewsTicker(category, names) {
+  const tickerContainerIds = {
+    Physical: "physical-news-ticker-container",
+    Social: "social-news-ticker-container",
+    Spiritual: "spiritual-news-ticker-container",
+    Emotional: "emotional-news-ticker-container",
+    Creative: "creative-news-ticker-container",
+    Travel: "travel-news-ticker-container",
+  };
+
+  const containerId = tickerContainerIds[category];
+  if (containerId) {
     if (names.length > 0) {
-      // Map categories to their respective ticker container IDs
-      const tickerContainerIds = {
-        Physical: "physical-news-ticker-container",
-        Social: "social-news-ticker-container",
-        Spiritual: "spiritual-news-ticker-container",
-        Emotional: "emotional-news-ticker-container",
-        Creative: "creative-news-ticker-container",
-        Travel: "travel-news-ticker-container",
-      };
-
-      const containerId = tickerContainerIds[cat];
-      if (containerId) {
-        const parentContainer = document.getElementById(containerId);
-
-        if (parentContainer) {
-          const newsTicker = parentContainer.querySelector(".news-ticker");
-          if (newsTicker) {
-            // Update the news ticker text dynamically
-            const namesString = `${names.join(", ")} Commits to ...`;
-            newsTicker.textContent = namesString;
-          }
-        }
-      }
+      document.getElementById(containerId).innerHTML =
+        `<div class="news-ticker"> <div class="news-text"> ${names.join(", ")} commit to... </div> </div> `;
+    } else {
+      document.getElementById(containerId).innerHTML =
+        `<div class="news-ticker"> <div class="news-text"> Be the first to commit to...</div> </div> `;
     }
   }
 }
+
+window.onload = async () => {
+  await fetchData(); // Fetch data on page load
+  attachHoverListeners(); // Attach event listeners after data is fetched
+};
 
 // Helper function to wait for data
 function waitForData() {
