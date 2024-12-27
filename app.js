@@ -42,10 +42,10 @@ async function fetchData() {
     // Categories in fixed order
     const categories = [
       "Physical",
-      "Emotional",
       "Social",
-      "Creative",
       "Spiritual",
+      "Emotional",
+      "Creative",
       "Travel",
     ];
 
@@ -54,6 +54,34 @@ async function fetchData() {
       acc[category] = data.filter((user) => user.category === category);
       return acc;
     }, {});
+
+    for (var i = 0; i < categories.length; i++) {
+      let cat = categories[i].toLowerCase();
+      let a = cat.slice(0, 2);
+
+      for (let j = 1; j <= 12; j++) {
+        cat += j.toString();
+
+        let notification = getnum_notification(cat);
+        notification.toString();
+        a += j.toString();
+        if (notification > 0) {
+          if (notification > 5) {
+            notification = "5+";
+          }
+          document.getElementById(a).innerHTML +=
+            `<div class="notification-badge translate-middle badge rounded-pill bg-danger">${notification}</div>`;
+        }
+        a = cat.slice(0, 2);
+
+        cat = categories[i].toLowerCase();
+      }
+    }
+
+    // let notification = getnum_notification("physical1");
+    //
+    // document.getElementById("ph1").innerHTML +=
+    //   `<div class="notification-badge translate-middle badge rounded-pill bg-danger">${notification}</div>`;
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -71,6 +99,40 @@ function attachHoverListeners() {
   });
 }
 
+function getnum_notification(imageElement) {
+  const regex = /([a-zA-Z]+)(\d{1,2})$/;
+  const match = imageElement.match(regex);
+
+  if (match) {
+    let cat = match[1];
+    const commitment = match[2];
+    cat = cat.charAt(0).toUpperCase() + cat.slice(1);
+
+    const target = `${cat.charAt(0).toLowerCase() + cat.slice(1)}_${commitment}.png`;
+
+    let names =
+      fetchedData[cat]
+        ?.filter((entry) => entry.notes.includes(target))
+        .map((entry) => `${entry.firstName} ${entry.lastName}`) || [];
+    names = [...new Set(names)];
+
+    return names.length;
+  }
+}
+let cards_data;
+fetch("./data_cards.json")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((cardsData) => {
+    cards_data = cardsData;
+    // Example: Accessing the first Physical card
+  })
+  .catch((error) => console.error("Error fetching the JSON:", error));
+
 // Function to dynamically update hover text
 async function getImageId(imageElement) {
   if (!fetchedData) {
@@ -87,37 +149,42 @@ async function getImageId(imageElement) {
 
     const target = `${cat.charAt(0).toLowerCase() + cat.slice(1)}_${commitment}.png`;
 
-    const names =
+    let names =
       fetchedData[cat]
         ?.filter((entry) => entry.notes.includes(target))
         .map((entry) => `${entry.firstName} ${entry.lastName}`) || [];
 
-    console.log(names);
+    names = [...new Set(names)];
 
-    updateNewsTicker(cat, names);
+    let modal_type = updateNewsTicker(cat);
+
+    console.log(modal_type);
+    document.getElementById(modal_type[1]).innerHTML =
+      cards_data[cat][commitment];
+    if (names.length > 0) {
+      const displayNames =
+        names.length > 5
+          ? `${names.slice(-5).join(", ")}...`
+          : names.join(", ");
+      document.getElementById(modal_type[0]).innerHTML =
+        `${displayNames} commit to`;
+    } else {
+      document.getElementById(modal_type[0]).innerHTML =
+        "Be the first to commit to";
+    }
   }
 }
 
-function updateNewsTicker(category, names) {
+function updateNewsTicker(category) {
   const tickerContainerIds = {
-    Physical: "physical-news-ticker-container",
-    Social: "social-news-ticker-container",
-    Spiritual: "spiritual-news-ticker-container",
-    Emotional: "emotional-news-ticker-container",
-    Creative: "creative-news-ticker-container",
-    Travel: "travel-news-ticker-container",
+    Physical: ["physicalModalLabel", "physical-body"],
+    Social: ["socialModalLabel", "social-body"],
+    Spiritual: ["spiritualModalLabel", "spiritual-body"],
+    Emotional: ["emotionalModalLabel", "emotional-body"],
+    Creative: ["creativeModalLabel", "creative-body"],
+    Travel: ["travelModalLabel", "travel-body"],
   };
-
-  const containerId = tickerContainerIds[category];
-  if (containerId) {
-    if (names.length > 0) {
-      document.getElementById(containerId).innerHTML =
-        `<div class="news-ticker"> <div class="news-text"> ${names.join(", ")} commit to... </div> </div> `;
-    } else {
-      document.getElementById(containerId).innerHTML =
-        `<div class="news-ticker"> <div class="news-text"> Be the first to commit to...</div> </div> `;
-    }
-  }
+  return tickerContainerIds[category];
 }
 
 window.onload = async () => {

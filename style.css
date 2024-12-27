@@ -1,4 +1,4 @@
-.carousel-item {
+.carousel-it.carousel-item {
   background-color: red;
 }
 
@@ -67,10 +67,12 @@
   z-index: 1;
 }
 img {
+  position: relative;
   margin: 10px;
   padding: 0;
   border-radius: 15px;
   background: inherit;
+  z-index: 10;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -82,12 +84,13 @@ img:hover {
   /* border-radius: 20px; */
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Add shadow for pop effect */
   cursor: pointer;
-  z-index: 10;
+  z-index: 20;
 }
 
 .image-container {
   display: inline-block;
   margin: 10px;
+  position: relative;
 }
 
 .news-ticker-container {
@@ -221,4 +224,24 @@ button {
 .custom-file-button:hover label {
   /*  background-color: #dde0e3; */
   cursor: pointer;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 10px; /* Adjust position as needed */
+  left: 50%; /* Adjust position as needed */
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  z-index: 12;
+  justify-content: center;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
