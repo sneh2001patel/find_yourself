@@ -26,62 +26,165 @@ document.querySelectorAll(".carousel-item").forEach((carousel) => {
   }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  const carousel = document.querySelector("#carouselExampleIndicators");
+
+  // Initialize the carousel with interval set to false
+  new bootstrap.Carousel(carousel, {
+    interval: false, // Prevents automatic slide changes
+  });
+});
+
 // Global variable to store the fetched data
-let fetchedData = null;
 const API_URL =
   "https://script.googleusercontent.com/macros/echo?user_content_key=zir6EdBoQZkQ_IjXREvm4xA5roDUHngsSIa-zgww03hsan718oC_Fo_4kUSNopA3oF946lhDSWOZ8G48GEhiJlbcIz8j5Nakm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnEXiQzPbb4GpVQ2JbU4QlN-4X-DEMHr60mHfk_YGugOB3MdMqMWqbNVHWGRUAd0BrNXqt-MchPyEkPXan-o2s5Bjx0YwUAgeuw&lib=MxkZbaXQM5-r9wnsZ4loxApTfj4_1MZ2S";
-
+let data = null;
 // Fetching data function that loads on page load
 async function fetchData() {
   try {
     // Fetch data from the API
     const response = await fetch(API_URL);
-    let data = await response.json();
+    data = await response.json();
     data = data.data;
 
+    data = data.map((entry) => {
+      return { ...entry, notes: entry.notes.toLowerCase() };
+    });
+
     // Categories in fixed order
-    const categories = [
-      "Physical",
-      "Social",
-      "Spiritual",
-      "Emotional",
-      "Creative",
-      "Travel",
-    ];
+    categories = {
+      "physical_1.png": 0,
+      "physical_2.png": 0,
+      "physical_3.png": 0,
+      "physical_4.png": 0,
+      "physical_5.png": 0,
+      "physical_6.png": 0,
+      "physical_7.png": 0,
+      "physical_8.png": 0,
+      "physical_9.png": 0,
+      "physical_10.png": 0,
+      "physical_11.png": 0,
+      "physical_12.png": 0,
+      "social_1.png": 0,
+      "social_2.png": 0,
+      "social_3.png": 0,
+      "social_4.png": 0,
+      "social_5.png": 0,
+      "social_6.png": 0,
+      "social_7.png": 0,
+      "social_8.png": 0,
+      "social_9.png": 0,
+      "social_10.png": 0,
+      "social_11.png": 0,
+      "social_12.png": 0,
+      "spiritual_1.png": 0,
+      "spiritual_2.png": 0,
+      "spiritual_3.png": 0,
+      "spiritual_4.png": 0,
+      "spiritual_5.png": 0,
+      "spiritual_6.png": 0,
+      "spiritual_7.png": 0,
+      "spiritual_8.png": 0,
+      "spiritual_9.png": 0,
+      "spiritual_10.png": 0,
+      "spiritual_11.png": 0,
+      "spiritual_12.png": 0,
+      "social_1.png": 0,
+      "social_2.png": 0,
+      "social_3.png": 0,
+      "social_4.png": 0,
+      "social_5.png": 0,
+      "social_6.png": 0,
+      "social_7.png": 0,
+      "social_8.png": 0,
+      "social_9.png": 0,
+      "social_10.png": 0,
+      "social_11.png": 0,
+      "social_12.png": 0,
+      "emotional_1.png": 0,
+      "emotional_2.png": 0,
+      "emotional_3.png": 0,
+      "emotional_4.png": 0,
+      "emotional_5.png": 0,
+      "emotional_6.png": 0,
+      "emotional_7.png": 0,
+      "emotional_8.png": 0,
+      "emotional_9.png": 0,
+      "emotional_10.png": 0,
+      "emotional_11.png": 0,
+      "emotional_12.png": 0,
+      "creative_1.png": 0,
+      "creative_2.png": 0,
+      "creative_3.png": 0,
+      "creative_4.png": 0,
+      "creative_5.png": 0,
+      "creative_6.png": 0,
+      "creative_7.png": 0,
+      "creative_8.png": 0,
+      "creative_9.png": 0,
+      "creative_10.png": 0,
+      "creative_11.png": 0,
+      "creative_12.png": 0,
+      "travel_1.png": 0,
+      "travel_2.png": 0,
+      "travel_3.png": 0,
+      "travel_4.png": 0,
+      "travel_5.png": 0,
+      "travel_6.png": 0,
+      "travel_7.png": 0,
+      "travel_8.png": 0,
+      "travel_9.png": 0,
+      "travel_10.png": 0,
+      "travel_11.png": 0,
+      "travel_12.png": 0,
+    };
 
     // Group users by category
-    fetchedData = categories.reduce((acc, category) => {
-      acc[category] = data.filter((user) => user.category === category);
-      return acc;
-    }, {});
+    // for (let i = 0; i < data.length; i++) {
+    //   all_commits = data[i].notes
+    //     .split(",")
+    //     .map((part) => part.trim().toLowerCase());
+    //
+    //   for (let j = 0; j < all_commits.length; j++) {
+    //     categories[all_commits[j]] += 1;
+    //   }
+    // }
 
-    for (var i = 0; i < categories.length; i++) {
-      let cat = categories[i].toLowerCase();
-      let a = cat.slice(0, 2);
-
-      for (let j = 1; j <= 12; j++) {
-        cat += j.toString();
-
-        let notification = getnum_notification(cat);
-        notification.toString();
-        a += j.toString();
-        if (notification > 0) {
-          if (notification > 5) {
-            notification = "5+";
+    for (const key in categories) {
+      if (categories.hasOwnProperty(key)) {
+        const value = key;
+        const filteredData = data.filter((entry) =>
+          entry.notes.includes(value),
+        );
+        const uniqueData = [];
+        const seen = new Set();
+        // Filter out duplicates
+        filteredData.forEach((entry) => {
+          const identifier = `${entry.firstName.toLowerCase()}-${entry.lastName.toLowerCase()}`;
+          if (!seen.has(identifier)) {
+            seen.add(identifier);
+            uniqueData.push(entry);
           }
-          document.getElementById(a).innerHTML +=
-            `<div class="notification-badge translate-middle badge rounded-pill bg-danger">${notification}</div>`;
-        }
-        a = cat.slice(0, 2);
+        });
 
-        cat = categories[i].toLowerCase();
+        categories[value] = uniqueData.length;
       }
     }
 
-    // let notification = getnum_notification("physical1");
-    //
-    // document.getElementById("ph1").innerHTML +=
-    //   `<div class="notification-badge translate-middle badge rounded-pill bg-danger">${notification}</div>`;
+    for (const key in categories) {
+      if (categories.hasOwnProperty(key)) {
+        let val = key;
+        val = val.replace(".png", "");
+        const letters = val.slice(0, 2).toLowerCase();
+        const number = val.split("_")[1];
+        const doc_id = letters + number;
+
+        if (categories[key] > 0) {
+          document.getElementById(doc_id).innerHTML +=
+            `<div class="notification-badge translate-middle badge rounded-pill bg-danger">${categories[key]}</div>`;
+        }
+      }
+    }
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -99,26 +202,6 @@ function attachHoverListeners() {
   });
 }
 
-function getnum_notification(imageElement) {
-  const regex = /([a-zA-Z]+)(\d{1,2})$/;
-  const match = imageElement.match(regex);
-
-  if (match) {
-    let cat = match[1];
-    const commitment = match[2];
-    cat = cat.charAt(0).toUpperCase() + cat.slice(1);
-
-    const target = `${cat.charAt(0).toLowerCase() + cat.slice(1)}_${commitment}.png`;
-
-    let names =
-      fetchedData[cat]
-        ?.filter((entry) => entry.notes.includes(target))
-        .map((entry) => `${entry.firstName} ${entry.lastName}`) || [];
-    names = [...new Set(names)];
-
-    return names.length;
-  }
-}
 let cards_data;
 fetch("./data_cards.json")
   .then((response) => {
@@ -135,54 +218,57 @@ fetch("./data_cards.json")
 
 // Function to dynamically update hover text
 async function getImageId(imageElement) {
-  if (!fetchedData) {
-    await waitForData(); // Wait for data if not yet fetched
+  if (!data) {
+    await waitForData();
   }
 
+  const formattedSubstring = imageElement.id.replace(/(\d+)/, "_$1") + ".png";
+  const filteredData = data.filter((entry) =>
+    entry.notes.includes(formattedSubstring),
+  );
+
+  const uniqueData = [];
+  const seen = new Set();
+
+  // Filter out duplicates
+  filteredData.forEach((entry) => {
+    const identifier = `${entry.firstName.toLowerCase()}-${entry.lastName.toLowerCase()}`;
+    if (!seen.has(identifier)) {
+      seen.add(identifier);
+      uniqueData.push(entry);
+    }
+  });
   const regex = /([a-zA-Z]+)(\d{1,2})$/;
   const match = imageElement.id.match(regex);
 
-  if (match) {
-    let cat = match[1];
-    const commitment = match[2];
-    cat = cat.charAt(0).toUpperCase() + cat.slice(1);
+  category = updateNewsTicker(match[1]);
 
-    const target = `${cat.charAt(0).toLowerCase() + cat.slice(1)}_${commitment}.png`;
-
-    let names =
-      fetchedData[cat]
-        ?.filter((entry) => entry.notes.includes(target))
-        .map((entry) => `${entry.firstName} ${entry.lastName}`) || [];
-
-    names = [...new Set(names)];
-
-    let modal_type = updateNewsTicker(cat);
-
-    console.log(modal_type);
-    document.getElementById(modal_type[1]).innerHTML =
-      cards_data[cat][commitment];
-    if (names.length > 0) {
-      const displayNames =
-        names.length > 5
-          ? `${names.slice(-5).join(", ")}...`
-          : names.join(", ");
-      document.getElementById(modal_type[0]).innerHTML =
-        `${displayNames} commit to`;
-    } else {
-      document.getElementById(modal_type[0]).innerHTML =
-        "Be the first to commit to";
+  document.getElementById(category[0]).innerHTML =
+    cards_data[match[1]][match[2]];
+  let cat1 = document.getElementById(category[1]);
+  cat1.innerHTML = "";
+  cat1.innerHTML += `<ul class="list-group list-group-flush">`;
+  if (uniqueData.length > 0) {
+    for (let i = 0; i < uniqueData.length; i++) {
+      const value = uniqueData[i];
+      cat1.innerHTML += `<li class="list-group-item">${value.firstName} ${value.lastName}</li>`;
     }
+  } else {
+    cat1.innerHTML += `<li class="list-group-item">Be the first to commit to...</li>`;
   }
+
+  cat1.innerHTML += `</ul>`;
+  // document.getElementById(category[1]).innerHTML = displayNames.slice(0, -2);
 }
 
 function updateNewsTicker(category) {
   const tickerContainerIds = {
-    Physical: ["physicalModalLabel", "physical-body"],
-    Social: ["socialModalLabel", "social-body"],
-    Spiritual: ["spiritualModalLabel", "spiritual-body"],
-    Emotional: ["emotionalModalLabel", "emotional-body"],
-    Creative: ["creativeModalLabel", "creative-body"],
-    Travel: ["travelModalLabel", "travel-body"],
+    physical: ["physicalModalLabel", "physical-body"],
+    social: ["socialModalLabel", "social-body"],
+    spiritual: ["spiritualModalLabel", "spiritual-body"],
+    emotional: ["emotionalModalLabel", "emotional-body"],
+    creative: ["creativeModalLabel", "creative-body"],
+    travel: ["travelModalLabel", "travel-body"],
   };
   return tickerContainerIds[category];
 }
@@ -196,7 +282,7 @@ window.onload = async () => {
 function waitForData() {
   return new Promise((resolve) => {
     const interval = setInterval(() => {
-      if (fetchedData) {
+      if (data) {
         clearInterval(interval);
         resolve(); // Resolve once data is fetched
       }

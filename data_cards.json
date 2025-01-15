@@ -1,5 +1,5 @@
 {
-  "Physical": {
+  "physical": {
     "1": "Go to a local park and play an outdoors sport (e.g. basketball, volleyball, tennis).",
     "2": "Take a walk in the snow or play in the snow (e.g. make a snowman).",
     "3": "Attend an indoor fitness class (e.g., yoga, pilates, or dance).",
@@ -13,7 +13,7 @@
     "11": "Go snowshoeing on a trail.",
     "12": "Do 5 cold plunges (use your shower if no natural option is safe)."
   },
-  "Creative": {
+  "creative": {
     "1": "Write a short story or poem.",
     "2": "Draw something that you can see outside your window.",
     "3": "Cook a new dish you’ve never made before.",
@@ -27,7 +27,7 @@
     "11": "Design and sew your own winter accessory (e.g., scarf, hat).",
     "12": "Host a fancy dinner for family or friends and cook a 3-course meal."
   },
-  "Social": {
+  "social": {
     "1": "Message someone you used to be close with but haven’t talked to in a while.",
     "2": "Invite your manager or team (or your classmates if you are a student) to dinner.",
     "3": "Write holiday cards for your friends or neighbors.",
@@ -41,7 +41,7 @@
     "11": "Share your dreams and hopes with 5 strangers.",
     "12": "Share a video of yourself singing, acting, or any other performance on social media."
   },
-  "Emotional": {
+  "emotional": {
     "1": "Hug your parents or loved ones.",
     "2": "Tell your family and friends you love them (without it being a joke or cringe).",
     "3": "Write a letter of thanks to your favorite teacher or mentor.",
@@ -55,7 +55,7 @@
     "11": "Share your dreams and hopes with your parents.",
     "12": "Try an in-person therapy session."
   },
-  "Travel": {
+  "travel": {
     "1": "Visit a local museum you’ve never been to.",
     "2": "Go fruit picking (if available in winter greenhouses) or explore a winter farmers’ market.",
     "3": "Take a walk to see holiday lights or displays (outside of your neighborhood).",
@@ -69,7 +69,7 @@
     "11": "Shower in a waterfall or outdoors body of water.",
     "12": "Take a day trip alone to a nearby town."
   },
-  "Spiritual": {
+  "spiritual": {
     "1": "Meditate for 5 minutes every day for one week.",
     "2": "Don’t use or check your phone until you are done brushing your teeth for one week.",
     "3": "Daily write something you're grateful for on a sticky note and put it in your room for one week.",
